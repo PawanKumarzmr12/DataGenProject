@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./cm-subscriber-backend  # Path to the backend folder
+    container_name: cm-subscriber-backend
+    ports:
+      - "4000:4000"  # Expose backend on port 4000
+    networks:
+      - app-network
+    environment:
+      - NODE_ENV=development
+
+  frontend:
+    build:
+      context: ./cm-subscriber-frontend  # Path to the frontend folder
+    container_name: cm-subscriber-frontend
+    ports:
+      - "3000:3000"  # Expose frontend on port 3000
+    networks:
+      - app-network
+    environment:
+      - API_BASE_URL=http://backend:4000  # Set the backend URL for frontend
+
+networks:
+  app-network:
+    driver: bridge
