@@ -1,26 +1,37 @@
 const express = require('express');
 const app = express();
-const cors = require('cors'); // Import the CORS package
+const cors = require('cors'); 
 const port = 4000;
 
-
-// Use CORS middleware to allow requests from other origins (like frontend)
 app.use(cors());
-// Middleware to parse JSON bodies
-app.use(express.json());
+app.use(express.json()); // Parse JSON
 
-
-// POST route to handle creating a subscriber
+// POST API - Create Subscriber Order
 app.post('/create-subscriber', (req, res) => {
-    const { name, email } = req.body;
-    console.log(`Subscriber created: ${name}, ${email}`);
-    res.status(201).json({
-      message: 'Subscriber created successfully My name is pawan Kumar)',
-      subscriber: { name, email }
+    const { name, email, phone, simType, subscriberCount, iccid } = req.body;
+
+    if (!name || !email || !phone || !simType || !subscriberCount || !iccid) {
+        return res.status(400).json({ message: "All fields are required!" });
+    }
+
+    console.log(`🛒 Order Received for ${subscriberCount} subscribers`);
+
+    // Initial response - Order Processing
+    res.status(202).json({
+        message: "✅ Waiting for 1 minute... Order is being processed.",
+        status: "processing"
     });
-  });
+
+    // Simulating Order Processing after 1 minute
+    setTimeout(() => {
+        const subscriberId = `SUB-${Math.floor(1000 + Math.random() * 9000)}`;
+        console.log(`✅ Order Created: ${subscriberId}`);
+
+        // Here, ideally, we would update a database with the subscriberId
+    }, 60000); // 1 min delay
+});
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+    console.log(`✅ Backend running at http://localhost:${port}`);
 });
