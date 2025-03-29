@@ -15,7 +15,7 @@ app.post('/create-subscriber', (req, res) => {
     const { name, email } = req.body;
     console.log(`Subscriber created: ${name}, ${email}`);
     res.status(201).json({
-      message: 'Subscriber created successfully',
+      message: 'Subscriber created successfully My name is pawan Kumar)',
       subscriber: { name, email }
     });
   });
